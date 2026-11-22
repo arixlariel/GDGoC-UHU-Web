@@ -51,6 +51,7 @@ jobs:
           test -f .vercel/output/static/sitemap.xml
           test -f .vercel/output/static/robots.txt
           test -f .vercel/output/static/og/hub.png
+          test -f .vercel/output/static/og/cybertrainer.png
           test -f .vercel/output/static/mantenimiento/index.html
           test -f .vercel/output/static/mantenimiento/openbadges/index.html
           test -f .vercel/output/static/mantenimiento/cybertrainer/index.html
