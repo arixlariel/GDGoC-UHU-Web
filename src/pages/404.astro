@@ -1,0 +1,115 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAssetUrl, getOpenBadgesPath } from '@/config/site';
+---
+
+<BaseLayout
+  title="404 · Página no encontrada | GDGoC UHU"
+  description="No se ha encontrado el certificado digital o la página solicitada en gdguhu.com (GDG on Campus Universidad de Huelva)."
+  section="openbadges"
+>
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative z-10 flex items-center justify-center flex-1">
+    <div
+      data-tilt-max="1.5"
+      class="tilt-card theme-card w-full rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden"
+    >
+      <div class="tilt-glare absolute inset-0 pointer-events-none z-20 rounded-3xl"></div>
+      <!-- Top 4-color accent bar (adapta colores a Google / Cyber) -->
+      <div class="theme-card-strip absolute top-0 left-0 right-0 h-1.5 grid grid-cols-4">
+        <div class="bg-[#4285F4]"></div>
+        <div class="bg-[#EA4335]"></div>
+        <div class="bg-[#FBBC04]"></div>
+        <div class="bg-[#34A853]"></div>
+      </div>
+
+      <!-- Status Pill -->
+      <div class="theme-badge-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+        <span class="w-2 h-2 rounded-full bg-[#EA4335] animate-ping"></span>
+        <span>Error 404 · Recurso no localizado</span>
+      </div>
+
+      <!-- Big 404 Number -->
+      <div class="font-display text-6xl sm:text-8xl font-extrabold theme-accent-text leading-none tracking-tight select-none">
+        404
+      </div>
+
+      <h1 class="font-display text-2xl sm:text-3xl font-bold theme-text-primary mt-4">
+        Certificado o página no encontrada
+      </h1>
+
+      <p class="mt-3 text-sm sm:text-base theme-text-secondary max-w-lg mx-auto leading-relaxed">
+        No existe ninguna credencial digital ni página en esta ruta. Si estabas intentando verificar un certificado, comprueba que hayas introducido el ID completo sin espacios ni errores
+      </p>
+
+      <!-- Direct Search Box to retry ID verification -->
+      <div class="mt-8 max-w-md mx-auto">
+        <form
+          id="search-404-cert-form"
+          autocomplete="off"
+          class="theme-search-box flex items-center gap-2 p-2 rounded-full transition-all duration-300"
+        >
+          <svg class="w-5 h-5 theme-text-secondary ml-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            id="search-404-cert-id"
+            autocomplete="off"
+            aria-label="Introduce el ID del certificado"
+            placeholder="Introduce el ID del certificado"
+            class="flex-1 bg-transparent text-xs sm:text-sm theme-text-primary placeholder:opacity-60 outline-none px-2 font-mono"
+            required
+          />
+          <button
+            type="submit"
+            class="theme-primary-btn px-5 py-2.5 rounded-full text-white font-semibold text-xs sm:text-sm transition-all duration-300 shrink-0 cursor-pointer"
+          >
+            Verificar
+          </button>
+        </form>
+      </div>
+
+      <script is:inline define:vars={{ certBaseUrl: getOpenBadgesPath('/cert/') }}>
+        (function () {
+          const form = document.getElementById('search-404-cert-form');
+          const input = document.getElementById('search-404-cert-id');
+          if (!form || !input) return;
+
+          const clearInput = () => {
+            input.value = '';
+          };
+
+          clearInput();
+          window.addEventListener('pageshow', clearInput);
+          window.addEventListener('pagehide', clearInput);
+
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const val = input.value.trim();
+            clearInput();
+            input.blur();
+            if (val) {
+              window.location.href = certBaseUrl + encodeURIComponent(val) + '/';
+            }
+          });
+        })();
+      </script>
+
+      <!-- Navigation Buttons -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={getOpenBadgesPath('/')}
+          class="theme-primary-btn inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-white text-xs sm:text-sm font-bold transition-all duration-300"
+        >
+          <span>← Ir a Open Badges</span>
+        </a>
+        <a
+          href={getAssetUrl('/')}
+          class="theme-pill-btn inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300"
+        >
+          <span>Ir a gdguhu.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

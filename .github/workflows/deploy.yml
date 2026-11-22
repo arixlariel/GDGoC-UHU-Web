@@ -1,0 +1,66 @@
+name: Deploy GDGoC UHU Web (gdguhu.com) to Vercel
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Sincronización automática 2 veces al día de próximos eventos de Bevy y sitemap Multi-Zone (00:00 y 15:00 CET)
+    - cron: '0 14,23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: 'vercel-web-production'
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build Portal Web & Edge Gateway & Deploy to Vercel
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Descargar configuración de proyecto Vercel (gdguhu)
+        run: npx --yes vercel@latest pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Compilar portal web Astro (OG 1200x630 + Bevy + Multi-Zone Middleware) para Vercel
+        env:
+          SITE_URL: "https://gdguhu.com"
+          BASE_PATH: "/"
+          OPENBADGES_ORIGIN: "https://gdguhu-openbadges.vercel.app"
+        run: npx --yes vercel@latest build --prod --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Verificar salida del portal gdguhu.com, Open Graph y Edge Middleware
+        run: |
+          test -f .vercel/output/static/index.html
+          test -f .vercel/output/static/404.html
+          test -f .vercel/output/static/sitemap.xml
+          test -f .vercel/output/static/robots.txt
+          test -f .vercel/output/static/og/hub.png
+          test -f .vercel/output/static/mantenimiento/index.html
+          test -f .vercel/output/static/mantenimiento/openbadges/index.html
+          test -f .vercel/output/static/mantenimiento/cybertrainer/index.html
+          ls -la .vercel/output/functions/
+          grep -q "middleware" .vercel/output/config.json
+          echo "OK: Portal gdguhu.com + Multi-Zone Gateway + Edge Middleware verificados"
+
+      - name: Desplegar a producción en Vercel (gdguhu.com)
+        id: vercel_deploy
+        run: |
+          DEPLOY_URL=$(npx --yes vercel@latest deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}")
+          echo "Deployed to: $DEPLOY_URL"
+          echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"

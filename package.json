@@ -1,0 +1,25 @@
+{
+  "name": "gdgoc-uhu-web",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "description": "Portal oficial de GDG on Campus Universidad de Huelva (gdguhu.com): landing, eventos Bevy, enlaces cortos, mantenimiento y enrutamiento Multi-Zone en Vercel Edge",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "node scripts/generate-og-images.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.5",
+    "@vercel/functions": "^3.11.3",
+    "astro": "^4.16.18",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@fontsource/plus-jakarta-sans": "^5.2.5",
+    "@resvg/resvg-js": "^2.6.2",
+    "satori": "^0.63.2"
+  }
+}

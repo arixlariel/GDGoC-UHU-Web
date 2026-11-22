@@ -1,0 +1,181 @@
+---
+import { siteConfig, getAssetUrl, getOpenBadgesPath } from '@/config/site';
+
+interface Props {
+  lockedStyle?: 'google' | 'cyber' | 'piscina' | 'nieve' | 'caramelos';
+  section?: 'hub' | 'openbadges' | 'cybertrainer';
+}
+
+const { lockedStyle, section = 'openbadges' } = Astro.props;
+
+const STYLE_INFO: Record<string, { icon: string; label: string }> = {
+  google: { icon: '🔵', label: 'Google' },
+  cyber: { icon: '⚡', label: 'Cyber' },
+  piscina: { icon: '🌊', label: 'Piscina' },
+  nieve: { icon: '❄️', label: 'Nieve' },
+  caramelos: { icon: '🍬', label: 'Caramelos' },
+};
+
+const lockedMeta = lockedStyle ? (STYLE_INFO[lockedStyle] || STYLE_INFO.google) : null;
+const lockedTitle =
+  section === 'hub'
+    ? 'Estilo oficial fijo para la portada de GDGoC UHU'
+    : section === 'cybertrainer'
+      ? 'Estilo Cyber oficial fijo de GDGoC UHU Cyber Trainer'
+      : 'Estilo fijo asignado a este certificado en su emisión';
+const brandHref =
+  section === 'hub'
+    ? getAssetUrl('/')
+    : section === 'cybertrainer'
+      ? getAssetUrl('/cybertrainer/')
+      : getOpenBadgesPath('/');
+const brandSubtitle =
+  section === 'hub'
+    ? 'Universidad de Huelva'
+    : section === 'cybertrainer'
+      ? 'Cyber Trainer'
+      : 'Open Badges';
+---
+
+<header class="theme-header sticky top-0 z-40 transition-colors duration-300">
+  <!-- Top Brand Strip (idéntico 6px / h-1.5 que en Cyber Trainer) -->
+  <div class="theme-top-strip h-1.5 w-full flex overflow-hidden">
+    <div class="h-full flex-1 bg-[#4285F4]"></div>
+    <div class="h-full flex-1 bg-[#EA4335]"></div>
+    <div class="h-full flex-1 bg-[#FBBC04]"></div>
+    <div class="h-full flex-1 bg-[#34A853]"></div>
+  </div>
+
+  <!-- Dimensiones unificadas 1:1 con GDGoC UHU Cyber Trainer (max-w-[1320px], py-[0.92rem], logo 48x48, pills 42px) -->
+  <div class="max-w-[1320px] mx-auto px-4 sm:px-6 py-[0.92rem] flex items-center justify-between gap-3">
+    <a href={brandHref} class="flex items-center gap-[0.8rem] group min-w-0">
+      <!-- Official GDGoC UHU Logo (48x48, border-radius 13px) -->
+      <div class="w-12 h-12 rounded-[13px] overflow-hidden border theme-border shadow-sm shrink-0 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300 bg-white">
+        <img
+          src={getAssetUrl('/images/gdgoc-uhu-logo-sm.webp')}
+          alt="GDG on Campus Universidad de Huelva"
+          width="48"
+          height="48"
+          decoding="async"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="truncate">
+        <div class="font-bold text-[1.04rem] theme-text-primary leading-[1.2] tracking-[-0.01em] truncate">
+          GDGoC UHU
+        </div>
+        <div class="text-[0.8rem] font-medium theme-text-secondary leading-[1.2] truncate">
+          {brandSubtitle}
+        </div>
+      </div>
+    </a>
+
+    <nav class="flex items-center gap-2 sm:gap-2.5 text-sm font-medium shrink-0">
+      <!-- Style / Theme Switcher Dropdown (or Locked Badge on Certificate pages) -->
+      {lockedMeta ? (
+        <div
+          class="theme-pill-btn inline-flex items-center justify-center gap-2 h-[42px] px-[1.05rem] rounded-full text-[0.88rem] leading-none font-semibold transition-all duration-300 select-none cursor-default whitespace-nowrap"
+          title={lockedTitle}
+        >
+          <span class="text-base leading-none">{lockedMeta.icon}</span>
+          <span>{lockedMeta.label}</span>
+          <svg
+            class="w-3.5 h-3.5 opacity-75 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-label="Estilo bloqueado"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            />
+          </svg>
+        </div>
+      ) : (
+        <div class="relative" id="theme-switcher-container">
+          <button
+            type="button"
+            id="theme-menu-button"
+            aria-expanded="false"
+            class="theme-pill-btn inline-flex items-center justify-center gap-2 h-[42px] px-[1.05rem] rounded-full text-[0.88rem] leading-none font-semibold transition-all duration-300 cursor-pointer select-none whitespace-nowrap"
+            title="Cambiar estilo visual de la página"
+          >
+            <span id="current-theme-icon" class="text-base leading-none">🔵</span>
+            <span id="current-theme-label">Google</span>
+            <svg class="w-3.5 h-3.5 opacity-70 transition-transform duration-200" id="theme-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Dropdown Menu with the 5 Styles (No subtitles, Caramelos at the end) -->
+          <div
+            id="theme-dropdown-menu"
+            class="hidden absolute right-0 mt-2 w-56 rounded-2xl p-2.5 pr-5 shadow-2xl border theme-dropdown-panel z-50 backdrop-blur-2xl transition-all"
+          >
+            <button
+              type="button"
+              data-set-theme="google"
+              class="theme-option-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold transition-all cursor-pointer"
+            >
+              <span class="text-lg">🔵</span>
+              <span>Google</span>
+            </button>
+
+            <button
+              type="button"
+              data-set-theme="cyber"
+              class="theme-option-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold transition-all cursor-pointer mt-1"
+            >
+              <span class="text-lg">⚡</span>
+              <span>Cyber</span>
+            </button>
+
+            <button
+              type="button"
+              data-set-theme="piscina"
+              class="theme-option-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold transition-all cursor-pointer mt-1"
+            >
+              <span class="text-lg">🌊</span>
+              <span>Piscina</span>
+            </button>
+
+            <button
+              type="button"
+              data-set-theme="nieve"
+              class="theme-option-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold transition-all cursor-pointer mt-1"
+            >
+              <span class="text-lg">❄️</span>
+              <span>Nieve</span>
+            </button>
+
+            <button
+              type="button"
+              data-set-theme="caramelos"
+              class="theme-option-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-left text-xs sm:text-sm font-bold transition-all cursor-pointer mt-1"
+            >
+              <span class="text-lg">🍬</span>
+              <span>Caramelos</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      <!-- Comunidad Button (oculto en móvil < 640px para no cortar el título superior; ya existe en el footer) -->
+      <a
+        href={siteConfig.communityUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Web oficial del GDGoC UHU"
+        class="theme-primary-btn hidden sm:inline-flex items-center justify-center gap-1.5 h-[42px] px-[1.05rem] rounded-full text-white transition-all duration-300 text-[0.88rem] leading-none font-semibold whitespace-nowrap"
+      >
+        <span>Comunidad</span>
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>
+    </nav>
+  </div>
+</header>

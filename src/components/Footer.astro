@@ -1,0 +1,87 @@
+---
+import { siteConfig, getAssetUrl } from '@/config/site';
+
+interface Props {
+  section?: 'hub' | 'openbadges' | 'cybertrainer';
+}
+
+const { section = 'openbadges' } = Astro.props;
+---
+
+<!-- Dimensiones y comportamiento unificados 1:1 con GDGoC UHU Cyber Trainer (113px exactos, sin cv-auto ni blur costoso) -->
+<footer class="theme-footer relative z-10 mt-auto border-t theme-border py-9 text-[0.78rem] theme-text-secondary transition-colors duration-300">
+  <div class="max-w-[1320px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-5">
+    <a
+      href={getAssetUrl('/')}
+      title="Ir a gdguhu.com"
+      class="theme-footer-brand flex items-center gap-[0.85rem] group transition-opacity hover:opacity-95"
+    >
+      <img
+        src={getAssetUrl('/images/gdgoc-uhu-logo-sm.webp')}
+        alt="GDG on Campus UHU"
+        width="40"
+        height="40"
+        loading="lazy"
+        decoding="async"
+        class="w-10 h-10 rounded-[10px] object-cover border theme-border bg-white shadow-xs transition-all duration-300 group-hover:scale-105 group-hover:rotate-3"
+      />
+      <div class="flex flex-col items-start gap-0.5">
+        <div class="font-bold text-[0.9rem] theme-text-primary leading-tight">
+          GDGoC UHU
+        </div>
+        <div class="text-[0.76rem] theme-text-secondary leading-tight">
+          Universidad de Huelva
+        </div>
+      </div>
+    </a>
+
+    <div class="flex flex-wrap items-center justify-center gap-4 text-[0.78rem]">
+      {section === 'openbadges' && (
+        <>
+          <a
+            href="https://openbadges.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="theme-link-muted font-medium transition-colors"
+          >
+            Powered by Open Badges
+          </a>
+          <span class="opacity-40">·</span>
+          <a
+            href={getAssetUrl('/cybertrainer/')}
+            class="theme-link font-semibold transition-all"
+          >
+            Cyber Trainer
+          </a>
+          <span class="opacity-40">·</span>
+        </>
+      )}
+      <a
+        href={siteConfig.communityUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="theme-link font-semibold transition-all"
+      >
+        Comunidad
+      </a>
+      <span class="opacity-40">·</span>
+      <a
+        href={siteConfig.linkedinUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="theme-link font-semibold transition-all"
+      >
+        LinkedIn
+      </a>
+      <span class="opacity-40">·</span>
+      <a
+        href={siteConfig.instagramUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="theme-link font-semibold transition-all"
+      >
+        Instagram
+      </a>
+    </div>
+  </div>
+</footer>
