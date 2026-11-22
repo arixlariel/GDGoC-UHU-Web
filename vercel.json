@@ -19,7 +19,9 @@
   ],
   "rewrites": [
     { "source": "/openbadges/", "destination": "https://gdguhu-openbadges.vercel.app/openbadges/" },
+    { "source": "/openbadges/:path*/", "destination": "https://gdguhu-openbadges.vercel.app/openbadges/:path*/" },
     { "source": "/openbadges/:path*", "destination": "https://gdguhu-openbadges.vercel.app/openbadges/:path*" },
+    { "source": "/cert/:path*/", "destination": "https://gdguhu-openbadges.vercel.app/cert/:path*/" },
     { "source": "/cert/:path*", "destination": "https://gdguhu-openbadges.vercel.app/cert/:path*" },
     { "source": "/api/badges/:path*", "destination": "https://gdguhu-openbadges.vercel.app/api/badges/:path*" },
     { "source": "/.well-known/did.json", "destination": "https://gdguhu-openbadges.vercel.app/.well-known/did.json" },
