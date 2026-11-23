@@ -18,19 +18,19 @@
     { "source": "/openbadges", "destination": "/openbadges/", "permanent": false }
   ],
   "rewrites": [
-    { "source": "/openbadges/", "destination": "https://gdguhu-openbadges.vercel.app/openbadges/" },
-    { "source": "/openbadges/:path*/", "destination": "https://gdguhu-openbadges.vercel.app/openbadges/:path*/" },
-    { "source": "/openbadges/:path*", "destination": "https://gdguhu-openbadges.vercel.app/openbadges/:path*" },
-    { "source": "/cert/:path*/", "destination": "https://gdguhu-openbadges.vercel.app/cert/:path*/" },
-    { "source": "/cert/:path*", "destination": "https://gdguhu-openbadges.vercel.app/cert/:path*" },
-    { "source": "/api/badges/:path*", "destination": "https://gdguhu-openbadges.vercel.app/api/badges/:path*" },
-    { "source": "/.well-known/did.json", "destination": "https://gdguhu-openbadges.vercel.app/.well-known/did.json" },
-    { "source": "/og/openbadges.png", "destination": "https://gdguhu-openbadges.vercel.app/og/openbadges.png" },
-    { "source": "/og/cert/:path*", "destination": "https://gdguhu-openbadges.vercel.app/og/cert/:path*" },
-    { "source": "/vendor/:path*", "destination": "https://gdguhu-openbadges.vercel.app/vendor/:path*" },
-    { "source": "/images/badges/:path*", "destination": "https://gdguhu-openbadges.vercel.app/images/badges/:path*" },
-    { "source": "/_astro-ob/:path*", "destination": "https://gdguhu-openbadges.vercel.app/_astro-ob/:path*" },
-    { "source": "/generador-local.html", "destination": "https://gdguhu-openbadges.vercel.app/generador-local.html" }
+    { "source": "/openbadges/", "destination": "https://gdgoc-uhu-openbadges.vercel.app/openbadges/" },
+    { "source": "/openbadges/:path*/", "destination": "https://gdgoc-uhu-openbadges.vercel.app/openbadges/:path*/" },
+    { "source": "/openbadges/:path*", "destination": "https://gdgoc-uhu-openbadges.vercel.app/openbadges/:path*" },
+    { "source": "/cert/:path*/", "destination": "https://gdgoc-uhu-openbadges.vercel.app/cert/:path*/" },
+    { "source": "/cert/:path*", "destination": "https://gdgoc-uhu-openbadges.vercel.app/cert/:path*" },
+    { "source": "/api/badges/:path*", "destination": "https://gdgoc-uhu-openbadges.vercel.app/api/badges/:path*" },
+    { "source": "/.well-known/did.json", "destination": "https://gdgoc-uhu-openbadges.vercel.app/.well-known/did.json" },
+    { "source": "/og/openbadges.png", "destination": "https://gdgoc-uhu-openbadges.vercel.app/og/openbadges.png" },
+    { "source": "/og/cert/:path*", "destination": "https://gdgoc-uhu-openbadges.vercel.app/og/cert/:path*" },
+    { "source": "/vendor/:path*", "destination": "https://gdgoc-uhu-openbadges.vercel.app/vendor/:path*" },
+    { "source": "/images/badges/:path*", "destination": "https://gdgoc-uhu-openbadges.vercel.app/images/badges/:path*" },
+    { "source": "/_astro-ob/:path*", "destination": "https://gdgoc-uhu-openbadges.vercel.app/_astro-ob/:path*" },
+    { "source": "/generador-local.html", "destination": "https://gdgoc-uhu-openbadges.vercel.app/generador-local.html" }
   ],
   "headers": [
     {

@@ -26,7 +26,7 @@ La plataforma web de GDGoC UHU está dividida en **tres repositorios independien
 | **`https://gdguhu.com/`** | **`GDGoC-UHU-Web`** *(este repositorio)* | Portada institucional en estilo oficial Google fijo con candado y próximo evento de Bevy |
 | **`https://gdguhu.com/mantenimiento/*`** y **`/404`** | **`GDGoC-UHU-Web`** *(este repositorio)* | Páginas globales de mantenimiento (respetando estilos y candados) y 404 |
 | **`https://gdguhu.com/ig`**, **`/linkedin`**, **`/ctf`**, **`/evento`**… | **`GDGoC-UHU-Web`** *(este repositorio)* | Redirecciones `HTTP 307` en `vercel.json` y redirección dinámica a Bevy en `middleware.js` |
-| **`https://gdguhu.com/openbadges/*`**, **`/cert/*`**, **`/api/badges/*`**, **`/.well-known/did.json`** | **[`GDGoC-UHU-OpenBadges`](https://github.com/arixlariel/GDGoC-UHU-OpenBadges)** | Proyecto Vercel independiente (`gdguhu-openbadges`) montado de forma transparente vía `rewrites` en `vercel.json` con namespace propio de assets (`/_astro-ob/*`) |
+| **`https://gdguhu.com/openbadges/*`**, **`/cert/*`**, **`/api/badges/*`**, **`/.well-known/did.json`** | **[`GDGoC-UHU-OpenBadges`](https://github.com/arixlariel/GDGoC-UHU-OpenBadges)** | Proyecto Vercel independiente (`gdgoc-uhu-openbadges`) montado de forma transparente vía `rewrites` en `vercel.json` con namespace propio de assets (`/_astro-ob/*`) |
 | **`https://gdguhu.com/cybertrainer/*`** | **[`GDGoC-UHU-CTFd`](https://github.com/arixlariel/GDGoC-UHU-CTFd)** | Reverse proxy HTTPS en `middleware.js` contra la instancia CTFd origen (`origin-ctf.gdguhu.com`), con reescritura de rutas, cookies, CSS, HTML y API JSON |
 
 ---
@@ -34,7 +34,7 @@ La plataforma web de GDGoC UHU está dividida en **tres repositorios independien
 ## 2. Tecnologías e Integraciones
 
 - **Vercel (Hosting, Multi-Zone Rewrites y Edge Routing Middleware)**:
-  - Despliegue atómico e inmutable sobre la red Edge global de Vercel (proyecto `gdguhu`), con certificados SSL automáticos para `gdguhu.com` y redirección `308` desde `www.gdguhu.com`.
+  - Despliegue atómico e inmutable sobre la red Edge global de Vercel (proyecto `gdgoc-uhu-web`), con certificados SSL automáticos para `gdguhu.com` y redirección `308` desde `www.gdguhu.com`.
   - **`vercel.json`**: define redirecciones cortas `HTTP 307`, `rewrites` Multi-Zone hacia Open Badges, cabeceras de seguridad (`HSTS`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`) y caché inmutable de 1 año para assets estáticos.
   - **`middleware.js`** (`@vercel/functions`): ejecuta el proxy inverso de `/cybertrainer/*`, la redirección en vivo de `/evento` hacia Bevy y el interruptor de modo mantenimiento global/por sección.
 - **Cloudflare (DNS-only + Email Routing + DMARC)**:
@@ -133,7 +133,7 @@ Cada sección del ecosistema dispone de una tarjeta panorámica **Open Graph `12
 Si el servidor CTFd origen (`origin-ctf.gdguhu.com`) tarda más de 12 segundos, no responde o devuelve `502`/`503`/`504`, `middleware.js` intercepta la respuesta automáticamente y muestra la página de mantenimiento Cyber (`HTTP 503`, `Retry-After: 120`) o una respuesta JSON `503` para llamadas `/cybertrainer/api/*`.
 
 ### --- Activación manual desde Vercel (`MAINTENANCE_MODE`)
-En **Vercel → Proyecto `gdguhu` → Settings → Environment Variables**, basta configurar la variable `MAINTENANCE_MODE`:
+En **Vercel → Proyecto `gdgoc-uhu-web` → Settings → Environment Variables**, basta configurar la variable `MAINTENANCE_MODE`:
 
 - `all`: pone toda la web en mantenimiento respetando cada estilo y candado.
 - `hub`, `openbadges` o `cybertrainer` (o combinados separados por coma, ej. `openbadges,cybertrainer`): pausa únicamente las secciones indicadas.
@@ -153,7 +153,7 @@ Comportamiento visual respetado en cada apartado:
 ### --- Secretos requeridos en GitHub Actions (`Settings -> Secrets and variables -> Actions`)
 - `VERCEL_TOKEN`: token de despliegue de Vercel.
 - `VERCEL_ORG_ID`: identificador del equipo/cuenta en Vercel.
-- `VERCEL_PROJECT_ID`: identificador del proyecto `gdguhu` en Vercel.
+- `VERCEL_PROJECT_ID`: identificador del proyecto `gdgoc-uhu-web` en Vercel.
 
 ### --- Despliegue local o publicación
 ```bash

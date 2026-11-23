@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getFullUrl, getOpenBadgesUrl } from '@/config/site';
 
-const OPENBADGES_ORIGIN = process.env.OPENBADGES_ORIGIN || 'https://gdguhu-openbadges.vercel.app';
+const OPENBADGES_ORIGIN = process.env.OPENBADGES_ORIGIN || 'https://gdgoc-uhu-openbadges.vercel.app';
 
 export const GET: APIRoute = async () => {
   const today = new Date().toISOString().split('T')[0];

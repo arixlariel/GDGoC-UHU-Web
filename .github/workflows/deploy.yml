@@ -34,14 +34,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Descargar configuración de proyecto Vercel (gdguhu)
+      - name: Descargar configuración de proyecto Vercel (gdgoc-uhu-web)
         run: npx --yes vercel@latest pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Compilar portal web Astro (OG 1200x630 + Bevy + Multi-Zone Middleware) para Vercel
         env:
           SITE_URL: "https://gdguhu.com"
           BASE_PATH: "/"
-          OPENBADGES_ORIGIN: "https://gdguhu-openbadges.vercel.app"
+          OPENBADGES_ORIGIN: "https://gdgoc-uhu-openbadges.vercel.app"
         run: npx --yes vercel@latest build --prod --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Verificar salida del portal gdguhu.com, Open Graph y Edge Middleware
