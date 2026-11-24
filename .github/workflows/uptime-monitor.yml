@@ -1,0 +1,60 @@
+name: Monitor Uptime (gdguhu.com)
+
+on:
+  schedule:
+    # Comprueba el estado del ecosistema cada 30 minutos
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      send_test_email:
+        description: 'Enviar correo de prueba aunque todos los servicios estén operativos'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: 'gdguhu-uptime-monitor'
+  cancel-in-progress: false
+
+jobs:
+  check-uptime:
+    name: Comprobar disponibilidad de gdguhu.com (Web, Open Badges, DID, Revocaciones y Cyber Trainer)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/check-uptime.mjs
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Restaurar estado previo del monitor (anti-spam)
+        uses: actions/cache/restore@v4
+        with:
+          path: .uptime-state
+          key: uptime-state-${{ github.run_id }}
+          restore-keys: |
+            uptime-state-
+
+      - name: Ejecutar comprobación Uptime y alertas Resend
+        id: monitor
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_TO: "gdgoc.huelva@gmail.com"
+          ALERT_FROM: "GDGoC UHU Monitor <monitor@gdguhu.com>"
+          SEND_TEST_EMAIL: ${{ inputs.send_test_email || 'false' }}
+        run: node scripts/check-uptime.mjs
+
+      - name: Guardar estado actualizado del monitor
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .uptime-state
+          key: uptime-state-${{ github.run_id }}

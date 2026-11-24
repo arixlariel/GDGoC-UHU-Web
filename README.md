@@ -49,8 +49,9 @@ La plataforma web de GDGoC UHU está dividida en **tres repositorios independien
   - Generación automática durante cada build de tarjetas sociales PNG `1200×630` optimizadas (< 120 KB) mediante **Satori**, **Resvg (`@resvg/resvg-js`)**, **Plus Jakarta Sans** (`@fontsource`) y **Sharp**, compatibles con LinkedIn, WhatsApp, Telegram, Discord y X.
 - **Astro 4 + Tailwind CSS + Bevy API**:
   - Sitio estático ultrarrápido con estilos inlineados, efectos de inclinación 3D delegados, sincronización en build y en vivo con la API pública de Bevy (`chapter_id = 3520`) y `sitemap.xml` unificado Multi-Zone.
-- **GitHub Actions (CI/CD y Cron)**:
-  - Compilación, verificación de artefactos y despliegue automático a producción en cada `push` a `main`, además de sincronización programada dos veces al día (`00:00` y `15:00 CET`).
+- **GitHub Actions (CI/CD, Cron Bevy y Monitor Uptime)**:
+  - Compilación, verificación de artefactos y despliegue automático a producción en cada `push` a `main`, además de sincronización programada de Bevy dos veces al día (`00:00` y `15:00 CET`).
+  - **Monitorización automática de caídas (`uptime-monitor.yml`)**: comprueba cada 30 minutos la disponibilidad de `/`, `/openbadges/`, `/.well-known/did.json`, `/api/badges/status/revocations.json` y `/cybertrainer/` (con 3 reintentos y anti-spam), avisando por correo mediante **Resend** (`monitor@gdguhu.com` → `gdgoc.huelva@gmail.com`) ante cualquier caída y al recuperarse el servicio.
 
 ---
 
@@ -60,13 +61,15 @@ La plataforma web de GDGoC UHU está dividida en **tres repositorios independien
 Web/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml                   <-- CI/CD a Vercel + cron diario 00:00 y 15:00 CET
+│       ├── deploy.yml                   <-- CI/CD a Vercel + cron diario 00:00 y 15:00 CET
+│       └── uptime-monitor.yml           <-- Monitor de disponibilidad cada 30 min con alertas Resend
 ├── public/
 │   ├── favicon.* / apple-touch-icon.png <-- Iconos del portal oficial gdguhu.com
 │   ├── robots.txt                       <-- Directivas SEO y referencia al sitemap global
 │   └── images/                          <-- Logotipos oficiales optimizados de GDGoC UHU
 ├── scripts/
-│   └── generate-og-images.mjs           <-- Genera /og/hub.png y /og/cybertrainer.png (1200×630)
+│   ├── generate-og-images.mjs           <-- Genera /og/hub.png y /og/cybertrainer.png (1200×630)
+│   └── check-uptime.mjs                 <-- Comprobación HTTP con reintentos, anti-spam y alertas Resend
 ├── src/
 │   ├── components/
 │   │   ├── Header.astro                 <-- Cabecera unificada con candados y selector de tema
@@ -155,6 +158,7 @@ Comportamiento visual respetado en cada apartado:
 - `VERCEL_TOKEN`: token de despliegue de Vercel.
 - `VERCEL_ORG_ID`: identificador del equipo/cuenta en Vercel.
 - `VERCEL_PROJECT_ID`: identificador del proyecto `gdgoc-uhu-web` en Vercel.
+- `RESEND_API_KEY`: clave de API de Resend para enviar alertas de caída y recuperación del monitor de disponibilidad.
 
 ### --- Despliegue local o publicación
 ```bash
