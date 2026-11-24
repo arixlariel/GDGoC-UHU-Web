@@ -37,6 +37,7 @@ La plataforma web de GDGoC UHU está dividida en **tres repositorios independien
   - Despliegue atómico e inmutable sobre la red Edge global de Vercel (proyecto `gdgoc-uhu-web`), con certificados SSL automáticos para `gdguhu.com` y redirección `308` desde `www.gdguhu.com`.
   - **`vercel.json`**: define redirecciones cortas `HTTP 307`, `rewrites` Multi-Zone hacia Open Badges, cabeceras de seguridad (`HSTS`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`) y caché inmutable de 1 año para assets estáticos.
   - **`middleware.js`** (`@vercel/functions`): ejecuta el proxy inverso de `/cybertrainer/*`, la redirección en vivo de `/evento` hacia Bevy y el interruptor de modo mantenimiento global/por sección.
+  - **Vercel Web Analytics & Speed Insights**: telemetría sin cookies (RGPD-friendly) y medición real de *Core Web Vitals* unificada en el panel de `gdgoc-uhu-web` para todo `gdguhu.com` (portada, Open Badges y Cyber Trainer).
 - **Cloudflare (DNS-only + Email Routing + DMARC)**:
   - Gestión autoritativa del dominio `gdguhu.com` en modo *DNS-only* (nube gris apuntando a Vercel y a `origin-ctf.gdguhu.com`), garantizando acceso directo sin interferencias de bloqueos IP compartidos.
   - **Cloudflare Email Routing** activado para reenviar cualquier correo enviado o respondido a `certificados@gdguhu.com` directamente a la bandeja oficial `gdgoc.huelva@gmail.com`.

@@ -212,6 +212,7 @@ function shouldPrefixPath(raw) {
   if (!raw.startsWith('/') || raw.startsWith('//')) return false;
   if (raw === PREFIX || raw.startsWith(PREFIX + '/')) return false;
   if (raw === '/openbadges' || raw.startsWith('/openbadges/')) return false;
+  if (raw.startsWith('/_vercel/')) return false;
   return true;
 }
 
@@ -338,7 +339,13 @@ function rewriteHtmlSegment(seg, lang, canonical, state) {
 
   if (!state.canonicalDone && /<\/head>/i.test(out)) {
     state.canonicalDone = true;
-    out = out.replace(/<\/head>/i, `<link rel="canonical" href="${canonical}"></head>`);
+    out = out.replace(
+      /<\/head>/i,
+      `<link rel="canonical" href="${canonical}">` +
+        `<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script>` +
+        `<script defer src="/_vercel/insights/script.js"></script>` +
+        `<script defer src="/_vercel/speed-insights/script.js"></script></head>`
+    );
   }
 
   out = out.replace(
